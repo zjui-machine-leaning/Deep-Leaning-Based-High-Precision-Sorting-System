@@ -12,6 +12,7 @@ import sys
 import random
 import itertools
 import colorsys
+import cv2
 
 import numpy as np
 from skimage.measure import find_contours
@@ -167,6 +168,99 @@ def display_instances(image, boxes, masks, class_ids, class_names,
     if auto_show:
         plt.show()
 
+def locate_and_display_instances(image, boxes, masks, class_ids, class_names,
+                      scores=None, title="",
+                      figsize=(16, 16), ax=None,
+                      show_mask=True, show_mA_box=True,
+                      colors=None, captions=None):
+    """
+    masks: [height, width, num_instances]
+    class_ids: [num_instances]
+    class_names: list of class names of the dataset
+    scores: (optional) confidence scores for each box
+    title: (optional) Figure title
+    show_mask, show_mA_bbox: To show masks and minimuun area boxes or not
+    figsize: (optional) the size of the image
+    colors: (optional) An array or colors to use with each object
+    captions: (optional) A list of strings to use as captions for each object
+    """
+    # Number of instances
+    N = boxes.shape[0]
+    if not N:
+        print("\n*** No instances to display *** \n")
+    else:
+        assert boxes.shape[0] == masks.shape[-1] == class_ids.shape[0]
+        
+    # If no axis is passed, create one and automatically call show()
+    auto_show = False
+    if not ax:
+        _, ax = plt.subplots(1, figsize=figsize)
+        auto_show = True
+
+    # Generate random colors
+    colors = colors or random_colors(N)
+
+    # Show area outside image boundaries.
+    height, width = image.shape[:2]
+    ax.set_ylim(height + 10, -10)
+    ax.set_xlim(-10, width + 10)
+    ax.axis('off')
+    ax.set_title(title)
+
+    masked_image = image.astype(np.uint8).copy()
+    for i in range(N):
+        color = colors[i]
+        
+        # Bounding box
+        if not np.any(boxes[i]):
+            # Skip this instance. Has no bbox. Likely lost in image cropping.
+            continue
+        y1, x1, y2, x2 = boxes[i]
+        
+        # Bounding minmuun area box
+        temp_mask = np.zeros([masks.shape[0], masks.shape[1]], dtype = np.uint8)
+        temp_mask[:,:] += masks[:,:,i]
+        contours,hierarchy= cv2.findContours(temp_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        contour = contours[0]
+        contour = np.array(contour)
+        contour = np.reshape(contour,[contour.shape[0],2])
+        rect = cv2.minAreaRect(contour)
+        if show_mA_box:
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            cv2.drawContours(masked_image, [box], 0, (0, 0, 255), 2)
+
+        # Label
+        if not captions:
+            class_id = class_ids[i]
+            score = scores[i] if scores is not None else None
+            label = class_names[class_id]
+            x = random.randint(x1, (x1 + x2) // 2)
+            caption = "{} {:.3f}\nx:{:.1f},y:{:.1f},ang:{:.1f}".format(label, score, rect[0][0], rect[0][1], (-rect[2] if rect[1][0]>rect[1][1] else 90-rect[2])) if score else label
+        else:
+            caption = captions[i]
+        ax.text(x1, y1 + 8, caption,
+                color='w', size=11, backgroundcolor="none")
+
+        # Mask
+        mask = masks[:, :, i]
+        if show_mask:
+            masked_image = apply_mask(masked_image, mask, color)
+
+        # Mask Polygon
+        # Pad to ensure proper polygons for masks that touch image edges.
+        padded_mask = np.zeros(
+            (mask.shape[0] + 2, mask.shape[1] + 2), dtype=np.uint8)
+        padded_mask[1:-1, 1:-1] = mask
+        contours = find_contours(padded_mask, 0.5)
+        for verts in contours:
+            # Subtract the padding and flip (y, x) to (x, y)
+            verts = np.fliplr(verts) - 1
+            p = Polygon(verts, facecolor="none", edgecolor=color)
+            ax.add_patch(p)
+    ax.imshow(masked_image.astype(np.uint8))
+    if auto_show:
+        plt.show()
 
 def display_differences(image,
                         gt_box, gt_class_id, gt_mask,
