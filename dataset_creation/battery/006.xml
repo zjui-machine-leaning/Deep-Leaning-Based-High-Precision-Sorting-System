@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<annotation>
+  <imagesize>
+    <nrows>67</nrows>
+    <ncols>102</ncols>
+  </imagesize>
+	<object>
+		<name>battery</name>
+		<id>0</id>
+		<polygon>
+			<pt>
+				<x>9</x>
+				<y>27</y>
+			</pt>
+			<pt>
+				<x>20</x>
+				<y>7</y>
+			</pt>
+			<pt>
+				<x>100</x>
+				<y>41</y>
+			</pt>
+			<pt>
+				<x>90</x>
+				<y>61</y>
+			</pt>
+		</polygon>
+	</object>
+</annotation>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<annotation>
+  <imagesize>
+    <nrows>236</nrows>
+    <ncols>168</ncols>
+  </imagesize>
+	<object>
+		<name>ring-pull can</name>
+		<id>0</id>
+		<polygon>
+			<pt>
+				<x>78</x>
+				<y>21</y>
+			</pt>
+			<pt>
+				<x>85</x>
+				<y>9</y>
+			</pt>
+			<pt>
+				<x>102</x>
+				<y>11</y>
+			</pt>
+			<pt>
+				<x>142</x>
+				<y>26</y>
+			</pt>
+			<pt>
+				<x>152</x>
+				<y>34</y>
+			</pt>
+			<pt>
+				<x>151</x>
+				<y>50</y>
+			</pt>
+			<pt>
+				<x>85</x>
+				<y>221</y>
+			</pt>
+			<pt>
+				<x>73</x>
+				<y>223</y>
+			</pt>
+			<pt>
+				<x>19</x>
+				<y>202</y>
+			</pt>
+			<pt>
+				<x>11</x>
+				<y>189</y>
+			</pt>
+		</polygon>
+	</object>
+</annotation>
