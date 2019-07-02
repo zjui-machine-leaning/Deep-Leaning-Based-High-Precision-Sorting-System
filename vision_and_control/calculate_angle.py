@@ -26,13 +26,13 @@ import numpy as np
 # steer_offset_x - 舵轴到大臂轴中线的距离（与大臂平行的方向）
 # steer_offset_y - 舵轴到大臂轴中线的距离（与大臂垂直的方向）
 
-leg_height = 15.5
-major_arm_len = 32
-minor_arm_len_m = 24
-minor_arm_len_b = 27
-minor_arm_len_d = 9
-bent_arm_len = 8
-bent_stick_len = 28
+leg_height = 20.0
+major_arm_len = 36.5
+minor_arm_len_m = 35.0
+minor_arm_len_b = 45.0
+minor_arm_len_d = 7.0
+bent_arm_len = 11.0
+bent_stick_len = 35
 plane_dist_h = 4
 plane_dist_v = 3
 steer_offset_x = 2
