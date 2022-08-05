@@ -1,4 +1,17 @@
-﻿# Mask R-CNN for Object Detection and Segmentation
+# A Demo of Using Mask R-CNN for Trash Sorting
+
+The Demo code for using Mask R-CNN for Trash Sorting. In this repository, we demonstrate how to use Mask R-CNN on trash sorting. Our goal is to use computer vision to guide robot arm to pick up trash. For that purpose, we need to know the overall shape and orientation of the trash, which are obtained throught Image Segmentation. 
+
+We used synthetic dataset for training and the model works well during test time.
+
+Please read dataset creation for more information about the synthetic dataset.
+Please read Deep-Leaning-Based-High-Precision-Sorting-System/samples/train/object_detection.ipynb for the demo code.
+
+![](samples/train/TrashSorting.png)
+
+The rest are copied from the original readme of Mask R-CNN implementation by Kaiming He, Georgia Gkioxari, Piotr Dollár and Ross Girshick. Big Thanks to them!
+
+# Mask R-CNN for Object Detection and Segmentation
 
 This is an implementation of [Mask R-CNN](https://arxiv.org/abs/1703.06870) on Python 3, Keras, and TensorFlow. The model generates bounding boxes and segmentation masks for each instance of an object in the image. It's based on Feature Pyramid Network (FPN) and a ResNet101 backbone.
 
